@@ -27,6 +27,7 @@ app.post('/json-rpc', (req, res) => {
   // Alternatively, you can use server.receiveJSON, which takes JSON string as is (in this case req.body).
   server.receive(jsonRPCRequest).then((jsonRPCResponse) => {
     if (jsonRPCResponse) {
+      jsonRPCResponse.result = 'Deu certo amigo'
       console.log('Entrou na req')
       res.json(jsonRPCResponse)
     } else {
