@@ -1,5 +1,11 @@
 # poc-json-rpc
 
+## Start server
+
+```bash
+npm run dev
+```
+
 ## Test method echo:
 
 Body req:
