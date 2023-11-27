@@ -6,6 +6,7 @@ type Methods = {
   echo(params: { message: string }): string
   sum(params: { x: number; y: number }): number
   terminals_list(params: { user_id: string }): string[]
+  terminals_block(params: { serial_number: string; model: string }): string
 }
 
 const server: TypedJSONRPCServer<Methods> = new JSONRPCServer()
@@ -17,6 +18,7 @@ const server: TypedJSONRPCServer<Methods> = new JSONRPCServer()
 server.addMethod('echo', ({ message }) => message)
 server.addMethod('sum', ({ x, y }) => x + y)
 server.addMethod('terminals_list', ({ user_id }) => ['alan o brabo, milho'])
+server.addMethod('terminals_block', ({ serial_number, model }) => 'OK')
 
 const app = express()
 app.use(bodyParser.json())
