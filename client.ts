@@ -38,9 +38,9 @@ const client: TypedJSONRPCClient<Methods> = new JSONRPCClient(
 
 // Use client.request to make a JSON-RPC request call.
 // The function returns a promise of the result.
-// client.request('sum', { x: 5, y: 10 }).then((result) => console.log(result))
-// client.request('echo', { message: 'Test Emerson' }).then(console.log)
-// client.request('terminals_list', { user_id: 'banana' }).then(console.log)
+client.request('sum', { x: 5, y: 10 }).then((result) => console.log(result))
+client.request('echo', { message: 'Test Emerson' }).then(console.log)
+client.request('terminals_list', { user_id: 'banana' }).then(console.log)
 client
   .request('terminals_block', {
     serial_number: 'i23i123',
