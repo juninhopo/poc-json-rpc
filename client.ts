@@ -11,6 +11,7 @@ type Methods = {
   terminals_list(params: { user_id: string }): string[]
   terminals_block(params: { serial_number: string; model: string }): string
   terminals_list_v2(params: { user_id: string }): Terminal[]
+  test_filipe(params: { nome: string; idade: number }): string
 }
 
 const client: TypedJSONRPCClient<Methods> = new JSONRPCClient(
@@ -47,6 +48,7 @@ client
     model: 'Gertec MP32',
   })
   .then(console.log)
+client.request('test_filipe', { nome: 'Filipe', idade: 17 }).then(console.log)
 
 // Use client.notify to make a JSON-RPC notification call.
 // By definition, JSON-RPC notification does not respond.
