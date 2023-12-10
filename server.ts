@@ -16,8 +16,7 @@ const verifyAge = ({ nome, idade }: any) => {
   if (idade < 18) {
     return 'menor de idade'
   } else {
-    const frase = `O ${nome} é maior de idade`
-    return frase
+    return `O ${nome} é maior de idade`
   }
 }
 
