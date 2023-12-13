@@ -13,11 +13,8 @@ type Methods = {
 const server: TypedJSONRPCServer<Methods> = new JSONRPCServer()
 
 const verifyAge = ({ nome, idade }: any) => {
-  if (idade < 18) {
-    return 'menor de idade'
-  } else {
-    return `O ${nome} é maior de idade`
-  }
+  // @ts-ignore
+  throw new Error(Error.message)
 }
 
 // First parameter is a method name.
@@ -41,7 +38,7 @@ app.post('/json-rpc', (req: any, res: any) => {
   // server.receive takes a JSON-RPC request and returns a promise of a JSON-RPC response.
   // It can also receive an array of requests, in which case it may return an array of responses.
   // Alternatively, you can use server.receiveJSON, which takes JSON string as is (in this case req.body).
-  server.receive(jsonRPCRequest).then((jsonRPCResponse) => {
+  server.receiveJSON(jsonRPCRequest).then((jsonRPCResponse) => {
     if (jsonRPCResponse) {
       res.json(jsonRPCResponse)
     } else {
