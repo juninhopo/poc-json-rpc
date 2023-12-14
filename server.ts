@@ -1,6 +1,10 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import { JSONRPCServer, TypedJSONRPCServer } from 'json-rpc-2.0'
+import {
+  JSONRPCServer,
+  TypedJSONRPCServer,
+  createJSONRPCErrorResponse,
+} from 'json-rpc-2.0'
 
 type Methods = {
   echo(params: { message: string }): string
@@ -12,9 +16,38 @@ type Methods = {
 
 const server: TypedJSONRPCServer<Methods> = new JSONRPCServer()
 
-const verifyAge = ({ nome, idade }: any) => {
+// @ts-ignore
+const logMiddleware = (next, request, serverParams) => {
+  console.log(`Received ${JSON.stringify(request)}`)
   // @ts-ignore
-  throw new Error(Error.message)
+  return next(request, serverParams).then((response) => {
+    // @ts-ignore
+    console.log(`Responding ${JSON.stringify(response)}`)
+    // @ts-ignore
+    return response
+  })
+}
+
+// @ts-ignore
+const exceptionMiddleware = async (next, request, serverParams) => {
+  try {
+    // @ts-ignore
+    return await next(request, serverParams)
+  } catch (error) {
+    // @ts-ignore
+    if (error.code) {
+      // @ts-ignore
+      return createJSONRPCErrorResponse(request.id, error.code, error.message)
+    } else {
+      throw error
+    }
+  }
+}
+server.applyMiddleware(logMiddleware, exceptionMiddleware)
+
+// @ts-ignore
+const verifyAge = async ({ nome, idade }: any) => {
+  throw new Error('oieeees')
 }
 
 // First parameter is a method name.
@@ -38,7 +71,7 @@ app.post('/json-rpc', (req: any, res: any) => {
   // server.receive takes a JSON-RPC request and returns a promise of a JSON-RPC response.
   // It can also receive an array of requests, in which case it may return an array of responses.
   // Alternatively, you can use server.receiveJSON, which takes JSON string as is (in this case req.body).
-  server.receiveJSON(jsonRPCRequest).then((jsonRPCResponse) => {
+  server.receive(jsonRPCRequest).then((jsonRPCResponse) => {
     if (jsonRPCResponse) {
       res.json(jsonRPCResponse)
     } else {
